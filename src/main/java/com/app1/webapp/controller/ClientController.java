@@ -28,22 +28,22 @@ import com.app1.util.Pager;
 
 @Controller
 public class ClientController extends BaseFormController {
-	private final Log log = LogFactory.getLog(ClientController.class);
-	@Autowired
-	ClassifyManager manager;
+    private final Log log = LogFactory.getLog(ClientController.class);
+    @Autowired
+    ClassifyManager manager;
 
-	@ResponseBody
-	@RequestMapping("/client/test*")
-	public ReturnData execute(HttpServletRequest request) {
-		String parentId = request.getParameter("parentID");
-		Long id = null;
-		if(parentId != null){
-			id = Long.valueOf(parentId);
-		}else{
-			id = new Long(1);
-		}
+    @ResponseBody
+    @RequestMapping("/client/test*")
+    public ReturnData execute(HttpServletRequest request) {
+        String parentId = request.getParameter("parentID");
+        Long id = null;
+        if (parentId != null) {
+            id = Long.valueOf(parentId);
+        } else {
+            id = new Long(1);
+        }
 /*
-		Enumeration names = request.getHeaderNames();
+        Enumeration names = request.getHeaderNames();
 		while (names.hasMoreElements()) {
 			String name = (String) names.nextElement();
 			System.out.println("<b>" + name + ":</b>" + request.getHeader(name) + "<br />");
@@ -53,100 +53,107 @@ public class ClientController extends BaseFormController {
 			System.err.println(name + ":" + request.getHeader(name) + "");
 
 		}*/
-		ReturnData rd = new ReturnData();
-		rd.setData(manager.getParent(id));
-		rd.setCode(1);
-		rd.setTxt("OK");
-		return rd;
-	}
-	
-	@Autowired
-	AlbumManager albumManager;
+        ReturnData rd = new ReturnData();
+        rd.setData(manager.getParent(id));
+        rd.setCode(1);
+        rd.setTxt("OK");
+        return rd;
+    }
 
-	@ResponseBody
-	@RequestMapping("/client/album*")
-	public Pager getAlbum(HttpServletRequest request,@RequestParam("page") int nowpage, @RequestParam("rows") int rows) {
-		String type = request.getParameter("type");
-		Map<String, Object> map = new HashMap<String, Object>();
-		return albumManager.getAlbums(nowpage, rows, map);
-		
-	}
-	
-	@Autowired
-	ArtistManager artistManager;
-	@ResponseBody
-	@RequestMapping("/client/artist*")
-	public Pager getArtist(Artist artist, HttpServletRequest request, @RequestParam("page") int nowpage, @RequestParam("rows") int rows) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		long albumId = artist.getAlbumId();
-		map.put("albumId", albumId);
-		Pager p = artistManager.getArtists(nowpage, rows, map);
-		return p;
-	}	
-	
-	
-	@Value("#{configProperties['albumroot']}")
-	String rootPath ;
-	
-	
-	@RequestMapping("client/img")
-	public void fileDownload(HttpServletRequest request, HttpServletResponse response) {
-		
-		String fileName = request.getParameter("url");
+    @Autowired
+    AlbumManager albumManager;
 
-		try {
-			fileName = AESUtils.decrypt(fileName);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			return ;
-		}
-		log.info("dowload img" + fileName);
-		response.setContentType("multipart/form-data");
-		String prefix = fileName.substring(fileName.lastIndexOf("/")+1);
-		response.setHeader("Content-Disposition", "attachment;fileName=" + prefix);
-		ServletOutputStream out;
-		File file = new File(rootPath + fileName);
+    @ResponseBody
+    @RequestMapping("/client/album*")
+    public Pager getAlbum(HttpServletRequest request, @RequestParam("page") int nowpage, @RequestParam("rows") int rows) {
+        String type = request.getParameter("type");
+        Map<String, Object> map = new HashMap<String, Object>();
+        return albumManager.getAlbums(nowpage, rows, map);
 
-		try {
-			FileInputStream inputStream = new FileInputStream(file);
-			out = response.getOutputStream();
-			byte[] buffer = new byte[1024];
-			int i = -1;
-			while ((i = inputStream.read(buffer)) != -1) {
-				out.write(buffer, 0, i);
-			}
-			inputStream.close();
-			out.close();
-			out.flush();
+    }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	class ReturnData{
-		private int code;
-		private String txt;
-		private Object data;
-		public int getCode() {
-			return code;
-		}
-		public void setCode(int code) {
-			this.code = code;
-		}
-		public String getTxt() {
-			return txt;
-		}
-		public void setTxt(String txt) {
-			this.txt = txt;
-		}
-		public Object getData() {
-			return data;
-		}
-		public void setData(Object data) {
-			this.data = data;
-		}
+    @Autowired
+    ArtistManager artistManager;
 
-		
-	}
+    @ResponseBody
+    @RequestMapping("/client/artist*")
+    public Pager getArtist(Artist artist, @RequestParam("page") int nowpage, @RequestParam("rows") int rows) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        long albumId = artist.getAlbumId();
+        map.put("albumId", albumId);
+        Pager p = artistManager.getArtists(nowpage, rows, map);
+        return p;
+    }
+
+
+    @Value("#{configProperties['albumroot']}")
+    String rootPath;
+
+
+    @RequestMapping("client/img")
+    public void fileDownload(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileName = request.getParameter("url");
+
+        try {
+            fileName = AESUtils.decrypt(fileName);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            return;
+        }
+        log.info("dowload img" + fileName);
+        response.setContentType("multipart/form-data");
+        String prefix = fileName.substring(fileName.lastIndexOf("/") + 1);
+        response.setHeader("Content-Disposition", "attachment;fileName=" + prefix);
+        ServletOutputStream out;
+        File file = new File(rootPath + fileName);
+
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            out = response.getOutputStream();
+            byte[] buffer = new byte[1024];
+            int i = -1;
+            while ((i = inputStream.read(buffer)) != -1) {
+                out.write(buffer, 0, i);
+            }
+            inputStream.close();
+            out.close();
+            out.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    class ReturnData {
+        private int code;
+        private String txt;
+        private Object data;
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public String getTxt() {
+            return txt;
+        }
+
+        public void setTxt(String txt) {
+            this.txt = txt;
+        }
+
+        public Object getData() {
+            return data;
+        }
+
+        public void setData(Object data) {
+            this.data = data;
+        }
+
+
+    }
 }
