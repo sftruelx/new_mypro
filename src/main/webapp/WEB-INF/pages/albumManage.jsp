@@ -275,7 +275,7 @@
 				$('#dlg-artist').dialog('open').dialog('center').dialog(
 						'setTitle', 'Edit User');
 				$('#artistfm').form('load', row);
-				url = 'artistFrom?artistId=' + row.artistId;
+				url = 'artistForm?artistId=' + row.artistId;
 			}
 		}
 		function saveArtist() {
