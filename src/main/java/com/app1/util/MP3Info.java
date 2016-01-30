@@ -14,7 +14,7 @@ public class MP3Info {
 	
 	public static void main(String[] args) {
 		//TODO ÑÝÊ¾
-		File MP3FILE = new File("test.mp3");
+		File MP3FILE = new File("E:\\美国口音\\chapter 1\\01.mp3");
 		try {
 			MP3Info info = new MP3Info(MP3FILE);
 			info.setCharset("UTF-8");

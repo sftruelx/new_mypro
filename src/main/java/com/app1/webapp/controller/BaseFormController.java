@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.audio.mp3.MP3File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -242,10 +245,12 @@ public class BaseFormController implements ServletContextAware {
 			String filePath = rootPath + savePath  + "/" + newname;
 			fi.setNewFileName(filePath);
 			File newFile = new File(filePath);
-			int n = MP3audio.getMp3TrackLength(newFile);
-			fi.setDuringTime(n);
 			fi.setEncodeFileName(AESUtils.encrypt( savePath  + "/" + newname));
 			file.transferTo(newFile);
+            MP3File f      = (MP3File) AudioFileIO.read(newFile);
+            AudioHeader audioHeader = f.getAudioHeader();
+            int n = audioHeader.getTrackLength();
+            fi.setDuringTime(n);
 			return  fi;
 		}
 		return null;

@@ -29,6 +29,7 @@ public class Artist extends BaseObject implements Serializable{
 	private String artistPath;
 	private String artistImg;
 	private long albumId;
+	private Integer artistTraceLength;
 	private MultipartFile[] files;
 	
     @Id
@@ -78,8 +79,18 @@ public class Artist extends BaseObject implements Serializable{
 	public void setArtistImg(String artistImg) {
 		this.artistImg = artistImg;
 	}
-	
-	 @Transient
+
+	@Column(name = "artist_traceLength",nullable = true)
+	@Field
+	public Integer getArtistTraceLength() {
+		return artistTraceLength;
+	}
+
+	public void setArtistTraceLength(Integer artistTraceLength) {
+		this.artistTraceLength = artistTraceLength;
+	}
+
+	@Transient
 	 @JsonIgnore
 	public MultipartFile[] getFiles() {
 		return files;

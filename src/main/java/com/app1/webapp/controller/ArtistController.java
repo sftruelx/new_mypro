@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.app1.model.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -56,14 +57,17 @@ public class ArtistController extends BaseFormController {
 				map.put("success", "1");
 			} else {
 				String fileName = "";
+				FileInfo fileInfo = null;
 				MultipartFile[] files = artist.getFiles();
 				if (files != null && files.length > 0) {
 					for (int i = 0; i < files.length; i++) {
 						MultipartFile file = files[i];
-						if (fileName != null) {
-							fileName = saveFile(file, savePath);
+						if ("".equals(fileName)) {
+							fileInfo = saveMP3File(file, savePath);
+							fileName = fileInfo.getEncodeFileName();
 						} else {
-							fileName = fileName + ";" + saveFile(file, savePath);
+							fileInfo = saveMP3File(file, savePath);
+							fileName = fileName + ";" + fileInfo.getEncodeFileName();
 						}
 					}
 				}
@@ -71,13 +75,16 @@ public class ArtistController extends BaseFormController {
 					Artist old = artistManager.getArtist(artist.getArtistId());
 					if(fileName != null){
 						old.setArtistPath(fileName);
+						old.setArtistTraceLength(fileInfo.getDuringTime());
 					}
 					old.setArtistName(artist.getArtistName());
 					artistManager.saveArtist(old);
 				} else {
-
-					artist.setArtistPath(fileName);
-			
+					if(fileName != null) {
+						artist.setArtistPath(fileName);
+						artist.setArtistTraceLength(fileInfo.getDuringTime());
+					}
+//					System.out.println(fileInfo.getDuringTime()+ "=========");
 					artistManager.saveArtist(artist);
 				}
 			}
