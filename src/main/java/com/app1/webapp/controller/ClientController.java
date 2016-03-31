@@ -3,6 +3,7 @@ package com.app1.webapp.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.app1.model.FileInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import com.app1.service.ArtistManager;
 import com.app1.service.ClassifyManager;
 import com.app1.util.AESUtils;
 import com.app1.util.Pager;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ClientController extends BaseFormController {
@@ -88,6 +91,19 @@ public class ClientController extends BaseFormController {
 
     @Value("#{configProperties['albumroot']}")
     String rootPath;
+
+    @ResponseBody
+    @RequestMapping("/client/artistForm*")
+    public Map filesUpload(Artist artist, HttpServletRequest request) {
+        Calendar cal = Calendar.getInstance();
+        String savePath = cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.DAY_OF_YEAR);
+        Map<String, String> map = new HashMap();
+        String msg = "this is 来个中文 test!";
+
+
+        map.put("errorMsg", msg);
+        return map;
+    }
 
 
     @RequestMapping("client/img")

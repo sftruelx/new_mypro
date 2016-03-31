@@ -29,13 +29,20 @@
         </session-management>
     </http>
 
+
+
+    <beans:bean id="customUserDetailsServiceImpl"
+          class="com.app1.security.bean.CustomUserDetailsServiceImpl">
+    </beans:bean>
+
     <authentication-manager>
-        <authentication-provider>
-            <password-encoder hash="sha"/>
+        <authentication-provider user-service-ref="customUserDetailsServiceImpl">
+           <!-- <password-encoder hash="sha"/>
             <user-service>
                 <user name="user" password="12dea96fec20593566ab75692c9949596833adc9" authorities="ROLE_USER"/>
                 <user name="admin" password="d033e22ae348aeb5660fc2140aec35850c4da997" authorities="ROLE_ADMIN"/>
             </user-service>
+            -->
         </authentication-provider>
     </authentication-manager>
 
