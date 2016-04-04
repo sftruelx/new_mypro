@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.app1.util.AES;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -227,7 +228,7 @@ public class BaseFormController implements ServletContextAware {
 			}
 			
 			file.transferTo(newFile);
-			return  AESUtils.encrypt( savePath  + "/" + newname);
+			return AES.encrypt2Str( savePath  + "/" + newname, AES.password);
 		}
 		return null;
 	}
@@ -245,7 +246,7 @@ public class BaseFormController implements ServletContextAware {
 			String filePath = rootPath + savePath  + "/" + newname;
 			fi.setNewFileName(filePath);
 			File newFile = new File(filePath);
-			fi.setEncodeFileName(AESUtils.encrypt( savePath  + "/" + newname));
+			fi.setEncodeFileName(AES.encrypt2Str( savePath  + "/" + newname, AES.password));
 			file.transferTo(newFile);
             MP3File f      = (MP3File) AudioFileIO.read(newFile);
             AudioHeader audioHeader = f.getAudioHeader();

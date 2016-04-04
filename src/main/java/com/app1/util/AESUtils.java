@@ -16,8 +16,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class AESUtils {
 	
 	
-	private static String key = "1234";
-	/**
+	/*private static String key = "1234";
+	*//**
 
 	 * 
 	 * @param content
@@ -25,7 +25,7 @@ public class AESUtils {
 	 * @param password
 	
 	 * @return
-	 */
+	 *//*
 	public static byte[] encrypt(String content, String password) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -37,7 +37,7 @@ public class AESUtils {
 			byte[] byteContent = content.getBytes("utf-8");
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 			byte[] result = cipher.doFinal(byteContent);
-			return result; // ����
+			return result; // ????
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
@@ -54,7 +54,7 @@ public class AESUtils {
 		return null;
 	}
 
-	/**
+	*//**
 	
 	 * 
 	 * @param content
@@ -62,7 +62,7 @@ public class AESUtils {
 	 * @param password
 
 	 * @return
-	 */
+	 *//*
 	public static byte[] decrypt(byte[] content, String password) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -88,10 +88,10 @@ public class AESUtils {
 		return null;
 	}
 
-	/**��������ת����16���� 
+	*//**?????????????16????
 	 * @param buf 
 	 * @return 
-	 */  
+	 *//*
 	public static String parseByte2HexStr(byte buf[]) {  
 	        StringBuffer sb = new StringBuffer();  
 	        for (int i = 0; i < buf.length; i++) {  
@@ -104,10 +104,10 @@ public class AESUtils {
 	        return sb.toString();  
 	}  
 	
-    /**��16����ת��Ϊ������
+    *//**??16??????????????
      * @param hexStr
      * @return
-     */
+     *//*
     public static byte[] parseHexStr2Byte(String hexStr) {
             if (hexStr.length() < 1)
                     return null;
@@ -133,13 +133,13 @@ public class AESUtils {
 	public static void main(String[] args) throws Exception {
         String content = "1234";
 
-        //����
+        //????
         System.out.println("" + content);
-        String encryptResultStr = encrypt(content);
+        String encryptResultStr = "26EE3DC89A84BE0590A8D65CCE6D323DE3E57FA8EFB8EF42381D2EB73CBADA52";//encrypt(content);
         System.out.println("" + encryptResultStr);
-        //����
+        //????
        
-        String decryptResult = decrypt(encryptResultStr);
+        String decryptResult = AESUtils.decrypt(encryptResultStr);
         System.out.println("" + decryptResult);
-	}
+	}*/
 }

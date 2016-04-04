@@ -43,6 +43,7 @@ public class AlbumController extends BaseFormController {
 	@ResponseBody
 	@RequestMapping("/albumForm*")
 	public Map filesUpload(Album album, HttpServletRequest request) {
+
 		Calendar cal = Calendar.getInstance();
 		String savePath = cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.DAY_OF_YEAR);
 		Map<String, String> map = new HashMap();
