@@ -6,7 +6,7 @@ import com.app1.model.FileInfo;
 import com.app1.service.AlbumManager;
 import com.app1.service.ArtistManager;
 import com.app1.service.ClassifyManager;
-import com.app1.util.AES;
+import com.app1.util.DES;
 import com.app1.util.Pager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -213,7 +213,7 @@ public class ClientController extends BaseFormController {
         String fileName = request.getParameter("url");
 
         try {
-            fileName = AES.decrypt2Str(fileName, AES.password);
+            fileName = new String(DES.decrypt(DES.parseHexStr2Byte(fileName), DES.password));
         } catch (Exception e1) {
             e1.printStackTrace();
             return;

@@ -12,7 +12,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import com.app1.util.AES;
+import com.app1.util.DES;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -33,7 +33,6 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import com.app1.Constants;
 import com.app1.model.FileInfo;
-import com.app1.util.AESUtils;
 import com.app1.util.MP3audio;
 
 /**
@@ -228,7 +227,7 @@ public class BaseFormController implements ServletContextAware {
 			}
 			
 			file.transferTo(newFile);
-			return AES.encrypt2Str( savePath  + "/" + newname, AES.password);
+			return DES.parseByte2HexStr(DES.encrypt( (savePath  + "/" + newname).getBytes(), DES.password));
 		}
 		return null;
 	}
@@ -246,7 +245,7 @@ public class BaseFormController implements ServletContextAware {
 			String filePath = rootPath + savePath  + "/" + newname;
 			fi.setNewFileName(filePath);
 			File newFile = new File(filePath);
-			fi.setEncodeFileName(AES.encrypt2Str( savePath  + "/" + newname, AES.password));
+			fi.setEncodeFileName(DES.parseByte2HexStr(DES.encrypt( (savePath  + "/" + newname).getBytes(), DES.password)));
 			file.transferTo(newFile);
             MP3File f      = (MP3File) AudioFileIO.read(newFile);
             AudioHeader audioHeader = f.getAudioHeader();
